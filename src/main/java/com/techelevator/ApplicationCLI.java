@@ -1,6 +1,8 @@
 package com.techelevator;
 
-import com.techelevator.view.Menu;
+import com.techelevator.view.UserInterface;
+
+import java.util.Scanner;
 
 /*
  * This class should control the workflow of the application, but not do any other work
@@ -20,19 +22,30 @@ public class ApplicationCLI {
 	 * 
 	 * Remember every class and data structure is a data types and can be passed as arguments to methods or constructors.
 	 */
-	private Menu menu;
+	private UserInterface ui;
 
-	public ApplicationCLI(Menu menu) {
-		this.menu = menu;
+	// First Menu Options
+	private final int SHOW_INVENTORY = 1;
+	private final int MAKE_SALE = 2;
+	private final int QUIT = 3;
+
+	// Second menu Options
+	private final int TAKE_MONEY = 1;
+	private final int SELECT_PRODUCTS = 2;
+	private final int COMPLETE_SALE = 3;
+
+
+	public ApplicationCLI(UserInterface menu) {
+		this.ui = menu;
 	}
 
 	/*
 	 * Your application starts here
 	 */
 	public void run() {
-
-		menu.showWelcomeMessage();
-
+		String invalidInputMessage = "Invalid input, please try again.";
+		Scanner userInput = new Scanner(System.in);
+		ui.showWelcomeMessage();
 
 		while (true) {
 			/*
@@ -46,6 +59,43 @@ public class ApplicationCLI {
 			ELSE IF the User's Choice is Quit
 				THEN break the loop so the application stops
 			*/
+
+			ui.printMainMenu();
+			int userChoice = userInput.nextInt();
+			userInput.nextLine();
+
+			if (userChoice == SHOW_INVENTORY) {
+				// TODO
+			}
+			else if (userChoice == MAKE_SALE) {
+
+				while(true) {
+					ui.printSecondMenu();
+					int userSecondMenuChoice = userInput.nextInt();
+					userInput.nextLine();
+
+					if (userSecondMenuChoice == TAKE_MONEY) {
+						// TODO
+					}
+					else if (userSecondMenuChoice == SELECT_PRODUCTS) {
+						// TODO
+					}
+					else if (userSecondMenuChoice == COMPLETE_SALE) {
+						// TODO
+					}
+					else {
+						ui.printMessage(invalidInputMessage);
+					}
+
+				}
+			}
+			else if (userChoice == QUIT) {
+				break;
+			}
+			else {
+				ui.printMessage(invalidInputMessage);
+			}
+
 		}
 	}
 
@@ -53,7 +103,7 @@ public class ApplicationCLI {
 	 * This starts the application, but you shouldn't need to change it.  
 	 */
 	public static void main(String[] args) {
-		Menu menu = new Menu();
+		UserInterface menu = new UserInterface();
 		ApplicationCLI cli = new ApplicationCLI(menu);
 		cli.run();
 	}
