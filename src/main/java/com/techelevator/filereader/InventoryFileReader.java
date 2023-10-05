@@ -28,6 +28,17 @@ public class InventoryFileReader {
             while (scanner.hasNextLine()) {
                 String nextLine = scanner.nextLine();
                 String[] splitLine = nextLine.split("\\|");
+
+                // REASSIGN WRAPPED OR NOT VALUE TO Y OR N
+                if(splitLine[4].equals("T")){
+                    splitLine[4] = "Y";
+
+                }
+                else {
+                    splitLine[4] = "N";
+                }
+
+                // DETERMINE CANDY TYPE AND ASSIGN AS RELEVANT OBJECT
                 if (splitLine[0].equals("CH")) {
                     Chocolate tempChoc = new Chocolate(splitLine[1], splitLine[2], new BigDecimal(splitLine[3]), splitLine[4]);
                     candyMap.put(splitLine[1], tempChoc);

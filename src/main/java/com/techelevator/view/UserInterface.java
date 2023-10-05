@@ -1,5 +1,8 @@
 package com.techelevator.view;
 
+import com.techelevator.items.Candy;
+
+import java.util.List;
 import java.util.Scanner;
 
 /*
@@ -39,4 +42,29 @@ public class UserInterface {
 	public void printMessage(String message) {
 		System.out.println(message);
 	}
+
+	// METHOD
+	public void printInventory(List<Candy> candyList){
+		System.out.print(String.format("%-5s", "ID"));
+		System.out.print(String.format("%-20s", "NAME"));
+		System.out.print(String.format("%-10s", "WRAPPER"));
+		System.out.print(String.format("%-5s", "QTY"));
+		System.out.print(String.format("%-5s", "PRICE"));
+		System.out.println();
+
+		for (Candy tempCandy : candyList) {
+
+			System.out.print(String.format("%-5s", tempCandy.getInventoryId()));
+			System.out.print(String.format("%-20s", tempCandy.getName()));
+			System.out.print(String.format("%-10s", tempCandy.getWrappedOrNot()));
+			System.out.print(String.format("%-5s", tempCandy.getQuantity()));
+			System.out.print(String.format("%-5s", tempCandy.getPrice()));
+			System.out.println();
+
+		}
+	}
+
+
+
+
 }

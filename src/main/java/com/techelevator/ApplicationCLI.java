@@ -1,7 +1,9 @@
 package com.techelevator;
 
+import com.techelevator.items.Candy;
 import com.techelevator.view.UserInterface;
 
+import java.util.List;
 import java.util.Scanner;
 
 /*
@@ -23,7 +25,7 @@ public class ApplicationCLI {
 	 * Remember every class and data structure is a data types and can be passed as arguments to methods or constructors.
 	 */
 	private UserInterface ui;
-	private Inventory inventory;
+	private Inventory inventory = new Inventory();
 
 	// First Menu Options
 	private final int SHOW_INVENTORY = 1;
@@ -48,6 +50,7 @@ public class ApplicationCLI {
 		Scanner userInput = new Scanner(System.in);
 		ui.showWelcomeMessage();
 
+
 		while (true) {
 
 			ui.printMainMenu();
@@ -56,6 +59,8 @@ public class ApplicationCLI {
 
 			if (userChoice == SHOW_INVENTORY) {
 				// TODO
+				showInventory();
+
 			}
 			else if (userChoice == MAKE_SALE) {
 
@@ -87,6 +92,12 @@ public class ApplicationCLI {
 			}
 
 		}
+	}
+
+	// METHODS
+	private void showInventory(){
+		List<Candy> candyList = inventory.fetchCandyList();
+		ui.printInventory(candyList);
 	}
 
 	/*
