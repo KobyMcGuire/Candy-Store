@@ -27,5 +27,33 @@ public class Inventory {
         return candyList;
     }
 
+    public boolean doesIdExist(String userChoice) {
+        return candyMap.containsKey(userChoice);
+    }
+
+    public boolean isInStock(String userChoice) {
+        int quantity = candyMap.get(userChoice).getQuantity();
+
+        if (quantity <= 0) {
+            return false;
+        }
+
+        return  true;
+    }
+
+    public boolean enoughToPurchase(String userIdChoice ,int userQuantityChoice) {
+        int currentStock = candyMap.get(userIdChoice).getQuantity();
+
+        if (currentStock - userQuantityChoice < 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public Candy fetchSpecificCandy(String userIdChoice) {
+        return candyMap.get(userIdChoice);
+    }
+
 
 }

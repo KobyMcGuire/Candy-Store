@@ -29,6 +29,7 @@ public class ApplicationCLI {
 	private UserInterface ui;
 	private Inventory inventory = new Inventory();
 	private CashRegister cashRegister = new CashRegister();
+	private ShoppingCart shoppingCart = new ShoppingCart();
 
 	// First Menu Options
 	private final int SHOW_INVENTORY = 1;
@@ -76,12 +77,13 @@ public class ApplicationCLI {
 					userInput.nextLine();
 
 					if (userSecondMenuChoice == TAKE_MONEY) {
-						// TODO
 						takeMoney();
 
 					}
 					else if (userSecondMenuChoice == SELECT_PRODUCTS) {
 						// TODO
+						String postSelectMessage = selectProducts();
+						ui.printMessage(postSelectMessage);
 					}
 					else if (userSecondMenuChoice == COMPLETE_SALE) {
 						// TODO
@@ -132,6 +134,39 @@ public class ApplicationCLI {
 			}
 		}
 
+	}
+
+	public String selectProducts() {
+		ui.printInventory(inventory.fetchCandyList());
+
+		ui.printMessage("Please enter the inventory id of the candy you would like to purchase: ");
+		String userIdChoice = userInput.nextLine();
+
+		ui.printMessage("Please enter an amount to buy: ");
+		int userQuantityChoice = userInput.nextInt();
+		userInput.nextLine();
+
+		if (!inventory.doesIdExist(userIdChoice)) {
+			return "This product does not exist.";
+		}
+
+		Candy userCandyChoice = inventory.fetchSpecificCandy(userIdChoice);
+
+		if (!inventory.isInStock(userIdChoice)) {
+			return "This product is out of stock";
+		}
+
+		if (!inventory.enoughToPurchase(userIdChoice, userQuantityChoice)) {
+			return "Your chosen amount exceeds our stock.";
+		}
+
+		if (!cashRegister.hasSufficientFunds(userQuantityChoice, userCandyChoice)) {
+			return "Insufficient funds for purchase";
+		}
+
+		shoppingCart.addCandyToCart(userCandyChoice, userQuantityChoice);
+		// TODO UPDATE CUSTOMER BALANCE
+		return "Candy has been added to your cart";
 	}
 
 	/*
