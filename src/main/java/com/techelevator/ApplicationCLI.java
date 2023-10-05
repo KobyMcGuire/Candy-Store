@@ -23,6 +23,7 @@ public class ApplicationCLI {
 	 * Remember every class and data structure is a data types and can be passed as arguments to methods or constructors.
 	 */
 	private UserInterface ui;
+	private Inventory inventory;
 
 	// First Menu Options
 	private final int SHOW_INVENTORY = 1;
@@ -48,17 +49,6 @@ public class ApplicationCLI {
 		ui.showWelcomeMessage();
 
 		while (true) {
-			/*
-			Display the Starting Menu and get the users choice.
-			Remember all uses of System.out and System.in should be in the menu
-			
-			IF the User Choice is Show Inventory,
-				THEN show the candy store items for sale
-			ELSE IF the User's Choice is Make Sale,
-				THEN go to the make sale menu
-			ELSE IF the User's Choice is Quit
-				THEN break the loop so the application stops
-			*/
 
 			ui.printMainMenu();
 			int userChoice = userInput.nextInt();
