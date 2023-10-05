@@ -3,6 +3,8 @@ package com.techelevator;
 import com.techelevator.items.Candy;
 import com.techelevator.view.UserInterface;
 
+import java.math.BigDecimal;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -26,6 +28,7 @@ public class ApplicationCLI {
 	 */
 	private UserInterface ui;
 	private Inventory inventory = new Inventory();
+	private CashRegister cashRegister = new CashRegister();
 
 	// First Menu Options
 	private final int SHOW_INVENTORY = 1;
@@ -37,6 +40,9 @@ public class ApplicationCLI {
 	private final int SELECT_PRODUCTS = 2;
 	private final int COMPLETE_SALE = 3;
 
+	Scanner userInput = new Scanner(System.in);
+
+
 
 	public ApplicationCLI(UserInterface menu) {
 		this.ui = menu;
@@ -47,7 +53,7 @@ public class ApplicationCLI {
 	 */
 	public void run() {
 		String invalidInputMessage = "Invalid input, please try again.";
-		Scanner userInput = new Scanner(System.in);
+
 		ui.showWelcomeMessage();
 
 
@@ -65,12 +71,14 @@ public class ApplicationCLI {
 			else if (userChoice == MAKE_SALE) {
 
 				while(true) {
-					ui.printSecondMenu();
+					ui.printSecondMenu(cashRegister.getBalance());
 					int userSecondMenuChoice = userInput.nextInt();
 					userInput.nextLine();
 
 					if (userSecondMenuChoice == TAKE_MONEY) {
 						// TODO
+						takeMoney();
+
 					}
 					else if (userSecondMenuChoice == SELECT_PRODUCTS) {
 						// TODO
@@ -98,6 +106,32 @@ public class ApplicationCLI {
 	private void showInventory(){
 		List<Candy> candyList = inventory.fetchCandyList();
 		ui.printInventory(candyList);
+	}
+
+	private void takeMoney(){
+		while(true) {
+			ui.printMessage("Please deposit an amount 1 - 100 dollars (whole number value only)");
+			int amountToTake = 0;
+			try{
+				amountToTake = userInput.nextInt();
+			} catch(InputMismatchException e) {
+				ui.printMessage("Expected whole value");
+
+			}
+			// PARSE INT AS BIG DECIMAL AND REASSIGN
+			BigDecimal deposit = BigDecimal.valueOf(amountToTake);
+			userInput.nextLine();
+
+			if (amountToTake >= 1 && amountToTake <= 100 && cashRegister.isUnderMax(deposit)) {
+				cashRegister.deposit(deposit);
+				break;
+			}
+
+			else {
+				ui.printMessage("Invalid input, please try again");
+			}
+		}
+
 	}
 
 	/*

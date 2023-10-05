@@ -49,7 +49,9 @@ public abstract class Candy {
     }
 
     public void setQuantity(int quantity) {
-        this.quantity = quantity;
+        if (!(quantity > 100)) {
+            this.quantity = quantity;
+        }
     }
 
     public BigDecimal getPrice() {

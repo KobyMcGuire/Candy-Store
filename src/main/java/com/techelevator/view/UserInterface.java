@@ -1,7 +1,9 @@
 package com.techelevator.view;
 
+import com.techelevator.CashRegister;
 import com.techelevator.items.Candy;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Scanner;
 
@@ -32,11 +34,11 @@ public class UserInterface {
 		System.out.println("(3) Quit");
 	}
 
-	public void printSecondMenu() {
+	public void printSecondMenu(BigDecimal balance) {
 		System.out.println("(1) Take Money");
 		System.out.println("(2) Select Products");
 		System.out.println("(3) Complete Sale");
-		System.out.println("PUT CASH REGISTER BALANCE HERE");
+		System.out.println("Current customer balance: $" + balance);
 	}
 
 	public void printMessage(String message) {
@@ -57,7 +59,12 @@ public class UserInterface {
 			System.out.print(String.format("%-5s", tempCandy.getInventoryId()));
 			System.out.print(String.format("%-20s", tempCandy.getName()));
 			System.out.print(String.format("%-10s", tempCandy.getWrappedOrNot()));
-			System.out.print(String.format("%-5s", tempCandy.getQuantity()));
+			if (tempCandy.getQuantity() == 0) {
+				System.out.println(String.format("%-5s", "SOLD OUT"));
+			}
+			else {
+				System.out.print(String.format("%-5s", tempCandy.getQuantity()));
+			}
 			System.out.print(String.format("%-5s", tempCandy.getPrice()));
 			System.out.println();
 
