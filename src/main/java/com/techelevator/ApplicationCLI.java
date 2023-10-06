@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Map;
 
 /*
  * This class should control the workflow of the application, but not do any other work
@@ -81,12 +82,13 @@ public class ApplicationCLI {
 
 					}
 					else if (userSecondMenuChoice == SELECT_PRODUCTS) {
-						// TODO
 						String postSelectMessage = selectProducts();
 						ui.printMessage(postSelectMessage);
 					}
 					else if (userSecondMenuChoice == COMPLETE_SALE) {
 						// TODO
+						makeSale();
+
 					}
 					else {
 						ui.printMessage(invalidInputMessage);
@@ -135,7 +137,7 @@ public class ApplicationCLI {
 		}
 
 	}
-
+	// SELECT PRODUCT METHOD
 	public String selectProducts() {
 		ui.printInventory(inventory.fetchCandyList());
 
@@ -168,6 +170,24 @@ public class ApplicationCLI {
 		shoppingCart.addCandyToCart(userCandyChoice, userQuantityChoice);
 		cashRegister.withdraw(totalPurchaseAmount);
 		return "Candy has been added to your cart";
+	}
+
+	// MAKE SALE METHOD
+	public void makeSale(){
+		// method that returns change
+		Map<BigDecimal, Integer> changeReturned = cashRegister.getChange();
+
+		System.out.println(changeReturned);
+
+
+
+
+
+
+
+
+
+
 	}
 
 	/*
