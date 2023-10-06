@@ -1,10 +1,12 @@
 package com.techelevator.view;
 
 import com.techelevator.CashRegister;
+import com.techelevator.ShoppingCart;
 import com.techelevator.items.Candy;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 /*
@@ -69,6 +71,28 @@ public class UserInterface {
 			System.out.println();
 
 		}
+	}
+
+	public void printReceipt(Map<Candy, Integer> shoppingCart, Map<BigDecimal, Integer> change, BigDecimal runningTotal, BigDecimal changeTotal) {
+		// QUANTITY CANDY-NAME CANDY-TO-STRING BASE-PRICE TOTAL-PRICE
+		for (Map.Entry<Candy, Integer> lineItem : shoppingCart.entrySet()) {
+			System.out.print(String.format("%-5s", lineItem.getValue()));
+			System.out.print(String.format("%-15s", lineItem.getKey().getName()));
+			System.out.print(String.format("%-25s", lineItem.getKey().getProductDescription()));
+			System.out.print(String.format("%-10s", "$" + lineItem.getKey().getPrice()));
+			System.out.print(String.format("%-10s", "$" + lineItem.getKey().getPrice().multiply(BigDecimal.valueOf(lineItem.getValue()))));
+			System.out.println();
+		}
+
+		System.out.print("Total: $" + runningTotal);
+		System.out.println();
+		System.out.print("Change: $" + changeTotal);
+		System.out.println();
+
+		for (Map.Entry<BigDecimal, Integer> lineItem : change.entrySet()) {
+			System.out.println("You are getting (" + lineItem.getValue() +") " + lineItem.getKey().toString() + "'s back");
+		}
+
 	}
 
 

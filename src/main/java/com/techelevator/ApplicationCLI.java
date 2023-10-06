@@ -1,5 +1,6 @@
 package com.techelevator;
 
+import com.techelevator.filereader.LogFileWriter;
 import com.techelevator.items.Candy;
 import com.techelevator.view.UserInterface;
 
@@ -31,6 +32,7 @@ public class ApplicationCLI {
 	private Inventory inventory = new Inventory();
 	private CashRegister cashRegister = new CashRegister();
 	private ShoppingCart shoppingCart = new ShoppingCart();
+	private LogFileWriter writer = new LogFileWriter();
 
 	// First Menu Options
 	private final int SHOW_INVENTORY = 1;
@@ -66,7 +68,6 @@ public class ApplicationCLI {
 			userInput.nextLine();
 
 			if (userChoice == SHOW_INVENTORY) {
-				// TODO
 				showInventory();
 
 			}
@@ -79,16 +80,14 @@ public class ApplicationCLI {
 
 					if (userSecondMenuChoice == TAKE_MONEY) {
 						takeMoney();
-
 					}
 					else if (userSecondMenuChoice == SELECT_PRODUCTS) {
 						String postSelectMessage = selectProducts();
 						ui.printMessage(postSelectMessage);
 					}
 					else if (userSecondMenuChoice == COMPLETE_SALE) {
-						// TODO
 						makeSale();
-
+						break;
 					}
 					else {
 						ui.printMessage(invalidInputMessage);
@@ -128,6 +127,7 @@ public class ApplicationCLI {
 
 			if (amountToTake >= 1 && amountToTake <= 100 && cashRegister.isUnderMax(deposit)) {
 				cashRegister.deposit(deposit);
+				writer.writeDeposit(deposit, cashRegister.getBalance());
 				break;
 			}
 
@@ -137,6 +137,7 @@ public class ApplicationCLI {
 		}
 
 	}
+
 	// SELECT PRODUCT METHOD
 	public String selectProducts() {
 		ui.printInventory(inventory.fetchCandyList());
@@ -169,25 +170,27 @@ public class ApplicationCLI {
 
 		shoppingCart.addCandyToCart(userCandyChoice, userQuantityChoice);
 		cashRegister.withdraw(totalPurchaseAmount);
-		return "Candy has been added to your cart";
+		writer.writeCandyPurchased(userCandyChoice, userQuantityChoice, cashRegister.getBalance());
+
+		return  userCandyChoice.getName() + " has been added to your cart.";
 	}
 
 	// MAKE SALE METHOD
 	public void makeSale(){
+		// Grab total change before we clear it
+		BigDecimal changeTotal = cashRegister.getBalance();
+
 		// method that returns change
 		Map<BigDecimal, Integer> changeReturned = cashRegister.getChange();
 
-		System.out.println(changeReturned);
+		// Write to File
+		writer.writeChange(changeTotal, cashRegister.getBalance());
 
+		// Print Receipt
+		ui.printReceipt(shoppingCart.getCopyOfMap(), changeReturned, shoppingCart.getRunningTotal(), changeTotal);
 
-
-
-
-
-
-
-
-
+		// Clearing Cart
+		shoppingCart.clearCart();
 	}
 
 	/*
