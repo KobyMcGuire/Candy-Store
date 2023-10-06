@@ -33,6 +33,8 @@ public class ApplicationCLI {
 	private CashRegister cashRegister = new CashRegister();
 	private ShoppingCart shoppingCart = new ShoppingCart();
 	private LogFileWriter writer = new LogFileWriter();
+	private Scanner userInput = new Scanner(System.in);
+
 
 	// First Menu Options
 	private final int SHOW_INVENTORY = 1;
@@ -43,8 +45,6 @@ public class ApplicationCLI {
 	private final int TAKE_MONEY = 1;
 	private final int SELECT_PRODUCTS = 2;
 	private final int COMPLETE_SALE = 3;
-
-	Scanner userInput = new Scanner(System.in);
 
 
 
@@ -57,13 +57,12 @@ public class ApplicationCLI {
 	 */
 	public void run() {
 		String invalidInputMessage = "Invalid input, please try again.";
-
 		ui.showWelcomeMessage();
-
 
 		while (true) {
 
 			ui.printMainMenu();
+			// Checking if input is correct
 			String userChoice = userInput.nextLine();
 			int userChoiceAsInt = 0;
 			try {
@@ -80,6 +79,7 @@ public class ApplicationCLI {
 
 				while(true) {
 					ui.printSecondMenu(cashRegister.getBalance());
+					// Checking if user input is okay
 					String userSecondMenuChoice = userInput.nextLine();
 					int userSecondChoiceAsInt = 0;
 					try{
