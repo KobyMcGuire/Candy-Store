@@ -20,7 +20,7 @@ public class CashRegister {
 
     // UTILITY METHODS
     public void withdraw(BigDecimal amountToWithdraw){
-
+        balance = balance.subtract(amountToWithdraw);
     }
 
     public void deposit(BigDecimal amountToDeposit) {
@@ -40,18 +40,13 @@ public class CashRegister {
         }
     }
 
-    public boolean hasSufficientFunds(int userQuantityChoice, Candy userCandyChoice) {
+    public BigDecimal calculatePurchaseAmount(int userQuantityChoice, Candy userCandyChoice) {
         BigDecimal totalPurchaseAmount = new BigDecimal(0);
         // Wrap quantity choice as a Big Decimal
         BigDecimal userQuantityChoiceAsBigDecimal = BigDecimal.valueOf(userQuantityChoice);
 
-        totalPurchaseAmount = totalPurchaseAmount.add((userCandyChoice.getPrice().multiply(userQuantityChoiceAsBigDecimal)));
+        return totalPurchaseAmount = totalPurchaseAmount.add((userCandyChoice.getPrice().multiply(userQuantityChoiceAsBigDecimal)));
 
-        if (totalPurchaseAmount.compareTo(getBalance()) == 1) {
-            return false;
-        }
-
-        return true;
     }
 
 

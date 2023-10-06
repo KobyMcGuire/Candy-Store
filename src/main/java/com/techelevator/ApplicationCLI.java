@@ -151,6 +151,7 @@ public class ApplicationCLI {
 		}
 
 		Candy userCandyChoice = inventory.fetchSpecificCandy(userIdChoice);
+		BigDecimal totalPurchaseAmount = cashRegister.calculatePurchaseAmount(userQuantityChoice, userCandyChoice);
 
 		if (!inventory.isInStock(userIdChoice)) {
 			return "This product is out of stock";
@@ -160,12 +161,12 @@ public class ApplicationCLI {
 			return "Your chosen amount exceeds our stock.";
 		}
 
-		if (!cashRegister.hasSufficientFunds(userQuantityChoice, userCandyChoice)) {
+		if (totalPurchaseAmount.compareTo(cashRegister.getBalance()) == 1) {
 			return "Insufficient funds for purchase";
 		}
 
 		shoppingCart.addCandyToCart(userCandyChoice, userQuantityChoice);
-		// TODO UPDATE CUSTOMER BALANCE
+		cashRegister.withdraw(totalPurchaseAmount);
 		return "Candy has been added to your cart";
 	}
 
