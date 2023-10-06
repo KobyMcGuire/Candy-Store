@@ -55,5 +55,10 @@ public class Inventory {
         return candyMap.get(userIdChoice);
     }
 
+    public void updateStock(Candy userCandyChoice, int amountPurchased){
+        userCandyChoice.setQuantity(userCandyChoice.getQuantity() - amountPurchased);
+
+    }
+
 
 }

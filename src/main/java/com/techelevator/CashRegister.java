@@ -91,7 +91,7 @@ public class CashRegister {
     }
 
     public boolean isUnderMax(BigDecimal amountToDeposit){
-        if (amountToDeposit.add(balance).compareTo(MAX_BALANCE) == -1) {
+        if (amountToDeposit.add(balance).compareTo(MAX_BALANCE) != 1) {
             return true;
         }
         else {

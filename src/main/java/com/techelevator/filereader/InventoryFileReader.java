@@ -38,6 +38,7 @@ public class InventoryFileReader {
                     splitLine[4] = "N";
                 }
 
+
                 // DETERMINE CANDY TYPE AND ASSIGN AS RELEVANT OBJECT
                 if (splitLine[0].equals("CH")) {
                     Chocolate tempChoc = new Chocolate(splitLine[1], splitLine[2], new BigDecimal(splitLine[3]), splitLine[4]);

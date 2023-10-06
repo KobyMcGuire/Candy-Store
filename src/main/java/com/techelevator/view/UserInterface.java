@@ -52,7 +52,7 @@ public class UserInterface {
 		System.out.print(String.format("%-5s", "ID"));
 		System.out.print(String.format("%-20s", "NAME"));
 		System.out.print(String.format("%-10s", "WRAPPER"));
-		System.out.print(String.format("%-5s", "QTY"));
+		System.out.print(String.format("%-10s", "QTY"));
 		System.out.print(String.format("%-5s", "PRICE"));
 		System.out.println();
 
@@ -62,10 +62,10 @@ public class UserInterface {
 			System.out.print(String.format("%-20s", tempCandy.getName()));
 			System.out.print(String.format("%-10s", tempCandy.getWrappedOrNot()));
 			if (tempCandy.getQuantity() == 0) {
-				System.out.println(String.format("%-5s", "SOLD OUT"));
+				System.out.print(String.format("%-10s", "SOLD OUT"));
 			}
 			else {
-				System.out.print(String.format("%-5s", tempCandy.getQuantity()));
+				System.out.print(String.format("%-10s", tempCandy.getQuantity()));
 			}
 			System.out.print(String.format("%-5s", tempCandy.getPrice()));
 			System.out.println();

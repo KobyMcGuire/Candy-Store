@@ -64,28 +64,38 @@ public class ApplicationCLI {
 		while (true) {
 
 			ui.printMainMenu();
-			int userChoice = userInput.nextInt();
-			userInput.nextLine();
+			String userChoice = userInput.nextLine();
+			int userChoiceAsInt = 0;
+			try {
+				userChoiceAsInt = Integer.parseInt(userChoice);
+			} catch (Exception e) {
+				ui.printMessage("ERROR");
+			}
 
-			if (userChoice == SHOW_INVENTORY) {
+			if (userChoiceAsInt == SHOW_INVENTORY) {
 				showInventory();
 
 			}
-			else if (userChoice == MAKE_SALE) {
+			else if (userChoiceAsInt == MAKE_SALE) {
 
 				while(true) {
 					ui.printSecondMenu(cashRegister.getBalance());
-					int userSecondMenuChoice = userInput.nextInt();
-					userInput.nextLine();
+					String userSecondMenuChoice = userInput.nextLine();
+					int userSecondChoiceAsInt = 0;
+					try{
+						userSecondChoiceAsInt = Integer.parseInt(userSecondMenuChoice);
+					} catch (Exception e) {
+						ui.printMessage("ERROR");
+					}
 
-					if (userSecondMenuChoice == TAKE_MONEY) {
+					if (userSecondChoiceAsInt == TAKE_MONEY) {
 						takeMoney();
 					}
-					else if (userSecondMenuChoice == SELECT_PRODUCTS) {
+					else if (userSecondChoiceAsInt == SELECT_PRODUCTS) {
 						String postSelectMessage = selectProducts();
 						ui.printMessage(postSelectMessage);
 					}
-					else if (userSecondMenuChoice == COMPLETE_SALE) {
+					else if (userSecondChoiceAsInt == COMPLETE_SALE) {
 						makeSale();
 						break;
 					}
@@ -95,7 +105,7 @@ public class ApplicationCLI {
 
 				}
 			}
-			else if (userChoice == QUIT) {
+			else if (userChoiceAsInt == QUIT) {
 				break;
 			}
 			else {
@@ -128,12 +138,13 @@ public class ApplicationCLI {
 			if (amountToTake >= 1 && amountToTake <= 100 && cashRegister.isUnderMax(deposit)) {
 				cashRegister.deposit(deposit);
 				writer.writeDeposit(deposit, cashRegister.getBalance());
-				break;
 			}
 
 			else {
-				ui.printMessage("Invalid input, please try again");
+				ui.printMessage("Invalid input or max balance ($1000.00) exceeded ");
+
 			}
+			break;
 		}
 
 	}
@@ -145,13 +156,22 @@ public class ApplicationCLI {
 		ui.printMessage("Please enter the inventory id of the candy you would like to purchase: ");
 		String userIdChoice = userInput.nextLine();
 
-		ui.printMessage("Please enter an amount to buy: ");
-		int userQuantityChoice = userInput.nextInt();
-		userInput.nextLine();
-
 		if (!inventory.doesIdExist(userIdChoice)) {
 			return "This product does not exist.";
 		}
+
+		ui.printMessage("Please enter an amount to buy: ");
+		int userQuantityChoice = 0;
+		try {
+			userQuantityChoice = userInput.nextInt();
+		} catch (InputMismatchException e) {
+			ui.printMessage("ERROR");
+		}
+		userInput.nextLine();
+		if (userQuantityChoice <= 0) {
+			return "Invalid quantity entered. Please enter a whole number.";
+		}
+
 
 		Candy userCandyChoice = inventory.fetchSpecificCandy(userIdChoice);
 		BigDecimal totalPurchaseAmount = cashRegister.calculatePurchaseAmount(userQuantityChoice, userCandyChoice);
@@ -167,10 +187,11 @@ public class ApplicationCLI {
 		if (totalPurchaseAmount.compareTo(cashRegister.getBalance()) == 1) {
 			return "Insufficient funds for purchase";
 		}
-
+		// THINGS THAT HAPPEN AFTER CHOICE IS CONFIRMED VALID
 		shoppingCart.addCandyToCart(userCandyChoice, userQuantityChoice);
 		cashRegister.withdraw(totalPurchaseAmount);
 		writer.writeCandyPurchased(userCandyChoice, userQuantityChoice, cashRegister.getBalance());
+		inventory.updateStock(userCandyChoice, userQuantityChoice);
 
 		return  userCandyChoice.getName() + " has been added to your cart.";
 	}
