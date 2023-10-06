@@ -15,17 +15,15 @@ public class ShoppingCart {
 
     // Methods
     public void addCandyToCart(Candy candy, int quantity) {
-        shoppingCartMap.put(candy, Integer.valueOf(quantity));
-
-        // TODO
-        // loop throuhg map if candy already exists and add to value
-    }
-
-    public void printCart() {
-        for(Map.Entry<Candy, Integer> lineItem : shoppingCartMap.entrySet()) {
-            System.out.println(lineItem.getKey() + " " + lineItem.getValue());
+        if (shoppingCartMap.containsKey(candy)){
+            shoppingCartMap.put(candy, (shoppingCartMap.get(candy) + quantity));
         }
+        else {
+            shoppingCartMap.put(candy, Integer.valueOf(quantity));
+        }
+
     }
+
 
     public Map<Candy, Integer> getCopyOfMap() {
         Map<Candy, Integer> copyOfMap = new HashMap<>();
@@ -50,8 +48,6 @@ public class ShoppingCart {
     public void clearCart() {
         shoppingCartMap.clear();
     }
-
-    // Getters and Setters
 
 
 }
